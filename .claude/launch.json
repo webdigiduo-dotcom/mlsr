@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "manas-lifestyle",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/HMTL/Downloads/Manas lifestyle/manas-website/build/serve.mjs", "4322"],
+      "port": 4322
+    }
+  ]
+}

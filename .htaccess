@@ -1,0 +1,188 @@
+# Manas Lifestyle Resort — Apache / LiteSpeed configuration
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+AddDefaultCharset utf-8
+AddType image/avif .avif
+AddType image/webp .webp
+AddType application/manifest+json .webmanifest
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# Force HTTPS and the canonical host (non-www) in a single hop
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^(.*)$ https://manaslifestyleresort.in/$1 [R=301,L]
+
+# Legacy WordPress patterns
+RewriteRule ^blog/page/[0-9]+/?$ /blog/ [R=301,L]
+RewriteRule ^page/[0-9]+/?$ / [R=301,L]
+RewriteRule ^category/.*$ /blog/ [R=301,L]
+RewriteRule ^tag/.*$ /blog/ [R=301,L]
+RewriteRule ^author/.*$ /about/ [R=301,L]
+RewriteRule ^(.+)/feed/?$ /$1/ [R=301,L]
+RewriteRule ^(.+)/amp/?$ /$1/ [R=301,L]
+# Old query-string permalinks (?p=123, ?page_id=123) → home
+RewriteCond %{QUERY_STRING} (^|&)(p|page_id)=[0-9]+ [NC]
+RewriteRule ^$ /? [R=301,L]
+</IfModule>
+
+# Specific URL redirects (one hop, 301)
+RedirectMatch 301 ^/index\.html$ /
+RedirectMatch 301 ^/home/$ /
+RedirectMatch 301 ^/sitemap_index\.xml$ /sitemap.xml
+RedirectMatch 301 ^/page-sitemap\.xml$ /sitemap.xml
+RedirectMatch 301 ^/post-sitemap\.xml$ /sitemap.xml
+RedirectMatch 301 ^/main-sitemap\.xsl$ /sitemap.xml
+RedirectMatch 301 ^/feed/$ /blog/
+RedirectMatch 301 ^/comments/feed/$ /blog/
+RedirectMatch 301 ^/accommodation/$ /all-accommodations/
+RedirectMatch 301 ^/rooms/$ /all-accommodations/
+RedirectMatch 301 ^/experiences/$ /facilities/
+RedirectMatch 301 ^/privacy/$ /privacy-policy/
+RedirectMatch 301 ^/terms/$ /terms-and-conditions/
+
+# Indexed photography: old WordPress upload URLs → optimised equivalents
+RedirectMatch 301 ^/wp-content/uploads/2023/11/low-size-scaled\.jpg$ /images/hero-aerial-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/08/1692350188-78244-dsc-8258-copy-1\.jpg$ /images/entrance-fountain-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350198-902084-dsc-8012-copy\.jpg$ /images/entrance-fountain-2-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/08/1692350187-624909-dsc-8233-copy\.jpg$ /images/resort-exterior-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/08/1692350187-153366-dsc-8247-copy2-1\.jpg$ /images/resort-driveway-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/08/1692350187-317633-dsc-8251-copy\.jpg$ /images/pool-1-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/Property-Swimming-Pool-2\.jpg$ /images/pool-2-1600.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/Property-LawnTop\.jpg$ /images/lawn-top-1600.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/08/1692350187-392651-dsc-8227-copy\.jpg$ /images/garden-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350205-314475-dsc-8203-copy\.jpg$ /images/arcade-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350204-815920-dsc-8205-copy\.jpg$ /images/indoor-games-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/08/1692350186-647070-dsc-8226-copy\.jpg$ /images/outdoor-games-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/IMG_1288-scaled-e1698475006504\.jpg$ /images/magic-show-1600.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/08/1692350204-771057-dsc-8197-copy\.jpg$ /images/pottery-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350187-355663-dsc-8241-copy\.jpg$ /images/ev-charging-960.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Luxury-Cottage-12-5-r99pqy8mzh3iz5p1foyy0gap1yzs3s5snzqr2h32c4\.webp$ /images/cottage-1-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Luxury-Cottage-12-1-r99pqi9drahnhsc9102ac2buyf6jgxecxsnhwrqr9w\.webp$ /images/cottage-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350201-887972-dsc-8082-copy-1\.jpg$ /images/cottage-3-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/1-11\.jpg$ /images/cottage-bath-1600.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Premium-room-1-r99prsbgp0m3oi3bci5a551cdj42os9dl7mok0vzfw\.webp$ /images/premium-1-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Premium-room-2-r99prw2tgcr8yxxuqjrsf436r2ljjkoaxq8mh4qer0\.webp$ /images/premium-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Premium-room-3-r99przu67owe9dse4leap3514m30ed38a8uke8ku24\.webp$ /images/premium-3-480.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350199-906159-dsc-8034-copy\.jpg$ /images/premium-bath-960.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/urban-room-5-ratfdj2redcv5v14vlrvcs4tsjwsa36cqnt40kn6lo\.webp$ /images/urban-room-1-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/urban-room-8-ratfdx6c8vw600gnl9v9w6kqpbzahjqbslle7q2a0c\.webp$ /images/urban-room-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/urban-room-13-ratfco234u6eiqa6wqd6khym6u5o82r7mea36fx6b0\.webp$ /images/urban-room-3-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/urban-room-9-ratfe4p1rk6gkw5qdd4ag4ofgey874k6hmta1xr4mk\.webp$ /images/urban-room-4-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/urban-room-1-ratfcwimuchzf7xwjc0toxtrjazz5cosnk5ghxkmr0\.webp$ /images/urban-room-5-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Luxe-room-4-r99pq1c9z47yj0pphdkdfc127z5dwyyaxddoufv5pg\.webp$ /images/luxe-1-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Luxe-room-3-r99ppwn30y1iwywj8tj8kv7r91sjuhfn8q49g224kk\.webp$ /images/luxe-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Luxe-room-2-r99ppsvq9lwdmj1zurwqaw5wvib2zp0pw7ibiy7p9g\.webp$ /images/luxe-3-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Luxe-room-6-r99pqdk6fyoopy7yi0uitqy1xzh5p1atb1v031d1gk\.webp$ /images/luxe-4-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Luxe-room-1-r99ppp4di9r8c37ggqa80x42hytm4wlsjowdlud9yc\.webp$ /images/luxe-5-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Junior-Suite-6-r99pssz63k0cpoozbkmtrmvx6tiakvxun2j5prrfdw\.webp$ /images/junior-1-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Junior-Suite-5-r99psp7tc7v7f8ufxj0bhnu2ta0tq3ixajx7snx02s\.webp$ /images/junior-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Junior-Suite-4-r99pslggkvq24szwjhdt7os8fqjcvb3zy1b9vk2kro\.webp$ /images/junior-3-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Junior-Suite-3-r99pshp3tjkwud5d5fraxpqe271w0ip2lipbyg85gk\.webp$ /images/junior-4-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Junior-Suite-2-r99psdxr27frjxatre4snqojonkf5qa5903e1cdq5g\.webp$ /images/junior-5-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/signtures-14-ratexnkvz3mj2y39kqqp8sckma5ma45jw35w8c6jos\.webp$ /images/signature-1-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/signtures-6-ratez1ec1biq6a2whu9xexs03pc2m2nbqxqmo04oj0\.webp$ /images/signature-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/signtures-16-ratey3k57a8ekbg1zfncx6beptyuwywzma95e1iur0\.webp$ /images/signature-3-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/signtures-9-ratex3u9zkvib4vxs07jafbw56uwsgz6tdgp5iztbg\.webp$ /images/signature-4-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/signtures-17-rateyb2upyip5754riwdh4f3gwxsmjqubbh1897pd8\.webp$ /images/signature-5-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/signtures-3-rateyvrawbb08mb3eru5zz78je3vbw0xq5tpscd1kc\.webp$ /images/signature-6-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Studio-Suite-2-r99pos80v2i71qj8su2a3nexphbrnhz6r62dt5q204\.webp$ /images/studio-1-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Studio-Suite-1-r99ponitwwbrfoq2ka1596lmqjyxl0gj2isyerx0v8\.webp$ /images/studio-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Studio-Suite-6-r99pp79fwf2s7hxed0kb7jmb7n9n2nmw58i5hl3r8k\.webp$ /images/studio-3-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Studio-Suite-5-r99pp4fxbwyx8o1hthcfi2bxfhnjfkbp4ujp1r7xr8\.webp$ /images/studio-4-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Studio-Suite-3-r99povzdmencc6ds6vosdmgs30t8iae43oobq9khb8\.webp$ /images/studio-5-480.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350200-981678-dsc-8053-copy\.jpg$ /images/studio-balcony-960.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/harmoney-1-rate3mmhnmis7dpewrhqld4hh65ie6y8fgxic4pagc\.webp$ /images/harmony-1-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/harmoney-6-rate4mccvbvogk9j46xk84401t9giow18dpykn8bvw\.webp$ /images/harmony-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/harmoney-3-rate40q2i5231j4xmfl54rkedy80lni7hepsja4dv0\.webp$ /images/harmony-3-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/harmoney-8-rate4zi3j0doz3qezcmc70sgd7gligc9y6uraiotgs\.webp$ /images/harmony-4-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/harmoney-2-rate3u576at2s9ehouqr5b86894g3rs34i5e6ce52k\.webp$ /images/harmony-5-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Suite-room-6-r99p956p5b3ueakbwl5edcc4yb436kzpkxledtci96\.webp$ /images/suite-1-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Suite-room-2-r99p8p7fx4hywx7jhw8qoydauraujq89uqi584076y\.webp$ /images/suite-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Suite-room-5-r99p91fcdyyp3upsijiw3daakrmmbsks8ezggpi2y2\.webp$ /images/suite-3-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Suite-room-4-r99p8xnzmmtjtev94hwdte8g7855h05uvwdijlnnmy\.webp$ /images/suite-4-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Suite-room-1-r99p8jkes4a8z9fqetsz9zsjag2n9jlvtyl8cg8k8a\.webp$ /images/suite-5-480.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350197-273128-dsc-7954-copy\.jpg$ /images/suite-living-960.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Royale-4bhk-5-r99po0ypcvgnprvd8c71grpv4pgonkwerrejpa3mse\.webp$ /images/royal-1-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Royale-4bhk-4-r99pnw9iepa83q26zs5wmawk5s3ul3dr3454awalni\.webp$ /images/royal-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Royale-4bhk-3-r99pnsi5nd52ta7nlqjecbups8mdqaytqlj6dsg6ce\.webp$ /images/royal-3-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Royale-4bhk-1-r99pni5xk6qx9kmoa42i2wgn901cdmts16cu3qvi8u\.webp$ /images/royal-4-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Royale-4bhk-7-r99poad397tixvhppg9b5pch2k6csjxq51xei1pp26\.webp$ /images/royal-5-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Royale-4bhk-6-r99po5nwb1n3btojgw86b8j63mtiq2f2genz3nwnxa\.webp$ /images/royal-6-480.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/1-6\.jpg$ /images/royal-pool-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-4bhk-4\.webp$ /images/uv4-1-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-4bhk-5\.webp$ /images/uv4-2-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-4bhk-6\.webp$ /images/uv4-3-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-4bhk-7\.webp$ /images/uv4-4-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-4bhk-9\.webp$ /images/uv4-5-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-4bhk-13\.webp$ /images/uv4-6-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-4bhk-16\.webp$ /images/uv4-7-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-villa-6BHK-5\.webp$ /images/uv6-1-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-villa-6BHK-10\.webp$ /images/uv6-2-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-villa-6BHK-18\.webp$ /images/uv6-3-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-villa-6BHK-19\.webp$ /images/uv6-4-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-villa-6BHK-1\.webp$ /images/uv6-5-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-villa-6BHK-3\.webp$ /images/uv6-6-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/08/urban-villa-6BHK-7\.webp$ /images/uv6-7-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Urban-villa-b1-7-r99pn506wi929wuchhtotb9amy0qmnt5m7i94rs27g\.webp$ /images/uv7-1-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/Urban-villa-b1-6-r99pn18u563wzgzt3g76jc7g9ej9rve89owb7nxmwc\.webp$ /images/uv7-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/07/Urban-Villa-b2-5\.webp$ /images/uv7-3-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/07/Urban-Villa-b2-6\.webp$ /images/uv7-4-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/2-7\.jpg$ /images/baithak-1-1600.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/1-7-qdni3ymvj8y0la0h3ix4xaampb7fabq7hvaupxv73o\.jpg$ /images/baithak-2-480.webp
+RedirectMatch 301 ^/wp-content/uploads/elementor/thumbs/3-6-qdni3wr75kvfy237ei3vsarpijgouxiqtlzvrdxzg4\.jpg$ /images/baithak-3-480.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350194-925478-dsc-7825-copy\.jpg$ /images/cf-main-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350194-187153-dsc-7820-copy\.jpg$ /images/cf-salad-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350192-596297-dsc-7810-copy-1\.jpg$ /images/cf-salad-2-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350191-899462-dsc-7800-copy\.jpg$ /images/cf-dessert-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350195-371727-dsc-7828-copy\.jpg$ /images/cf-dessert-2-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350193-64261-dsc-7816-copy\.jpg$ /images/cf-sitout-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350194-203706-dsc-7839-copy\.jpg$ /images/sp-sitout-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350196-593890-dsc-7861-copy\.jpg$ /images/sp-sitout-2-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350195-594829-dsc-7855-copy\.jpg$ /images/sp-bar-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350197-879899-dsc-7896-copy\.jpg$ /images/sp-1-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350196-935744-dsc-7887-copy\.jpg$ /images/sp-2-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350188-243079-dsc-8281-copy\.jpg$ /images/chef-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350196-263763-dsc-7906-copy\.jpg$ /images/mist-cluster-blue-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350196-491409-dsc-7900-copy-1\.jpg$ /images/mist-cluster-blue-2-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350198-451208-dsc-7977-copy\.jpg$ /images/mist-theatre-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350198-979337-dsc-7967-copy\.jpg$ /images/mist-theatre-2-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350192-718560-dsc-7790-copy\.jpg$ /images/mist-cluster-black-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/1692350192-720209-dsc-7796-copy\.jpg$ /images/mist-cluster-black-2-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/IMG_4756-scaled\.jpg$ /images/wedding-1-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/IMG_3096-scaled\.jpg$ /images/wedding-2-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/IMG_3036-scaled\.jpg$ /images/wedding-3-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/IMG_5384-scaled\.jpg$ /images/wedding-4-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/IMG_5314-scaled\.jpg$ /images/wedding-5-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/IMG_4959-scaled\.jpg$ /images/wedding-6-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/IMG_4889-scaled\.jpg$ /images/wedding-7-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/10/IMG_4795-scaled\.jpg$ /images/wedding-8-2400.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/09/6227975e7c\.jpg$ /images/wedding-9-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/11/WhatsApp-Image-2023-11-02-at-10\.47\.50\.jpeg$ /images/corp-1-960.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/11/WhatsApp-Image-2023-11-02-at-10\.47\.40\.jpeg$ /images/corp-2-1600.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/11/WhatsApp-Image-2023-11-02-at-10\.47\.42\.jpeg$ /images/corp-3-1600.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/11/WhatsApp-Image-2023-11-02-at-10\.47\.43\.jpeg$ /images/corp-4-1600.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/11/WhatsApp-Image-2023-11-02-at-10\.47\.47\.jpeg$ /images/corp-5-1600.webp
+RedirectMatch 301 ^/wp-content/uploads/2023/11/WhatsApp-Image-2023-11-02-at-10\.47\.48\.jpeg$ /images/corp-6-1600.webp
+RedirectMatch 301 ^/wp-content/uploads/2025/09/Multi-Cuisine-Restaurant-In-Igatpuri\.webp$ /images/dining-feature-2400.webp
+
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set Permissions-Policy "geolocation=(), camera=(), microphone=()"
+<FilesMatch "\.(avif|webp|jpg|png|svg|woff2|pdf)$">
+Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+<FilesMatch "\.(css|js)$">
+Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+<FilesMatch "\.(html|xml|txt)$">
+Header set Cache-Control "public, max-age=600, must-revalidate"
+</FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css application/javascript text/xml application/xml image/svg+xml application/json text/plain
+</IfModule>
